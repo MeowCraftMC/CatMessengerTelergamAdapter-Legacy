@@ -69,15 +69,18 @@ public class MessageParser
 
         if (message.Photo is { Length: > 0 })
         {
-            var count = message.Photo.Length;
-            if (count == 1)
-            {
-                chatMsg.Append(new ChatMessage("[图片] ").WithColor(TextColor.Green));
-            }
-            else
-            {
-                chatMsg.Append(new ChatMessage($"[图片 * {count}] ").WithColor(TextColor.Green));
-            }
+            chatMsg.Append(new ChatMessage("[图片] ").WithColor(TextColor.Green));
+            
+            // Fixme: qyl27: Show pictures count?
+            // var count = message.Photo.DistinctBy(photo => photo.FileUniqueId).Count();
+            // if (count == 1)
+            // {
+            //     chatMsg.Append(new ChatMessage("[图片] ").WithColor(TextColor.Green));
+            // }
+            // else
+            // {
+            //     chatMsg.Append(new ChatMessage($"[图片 * {count}] ").WithColor(TextColor.Green));
+            // }
         }
 
         if (message.Sticker != null)
@@ -108,7 +111,7 @@ public class MessageParser
         if (message.From != null)
         {
             chatMsg.Append(new ChatMessage("[")
-                .WithColor(TextColor.Green)
+                .WithColor(TextColor.Aqua)
                 .Append(FromUser(message.From))
                 .Append(new ChatMessage("] ")));
         }
@@ -129,7 +132,7 @@ public class MessageParser
     public static ChatMessage FromSticker(Sticker sticker)
     {
         return new ChatMessage($"[贴纸 {sticker.Emoji}] ")
-            .WithColor(TextColor.Aqua)
+            .WithColor(TextColor.Blue)
             .WithHoverText($"来自贴纸包 {sticker.SetName}");
     }
 

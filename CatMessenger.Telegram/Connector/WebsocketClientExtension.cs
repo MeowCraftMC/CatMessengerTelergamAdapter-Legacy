@@ -1,5 +1,4 @@
-﻿using CatMessenger.Telegram.Connector.Packet;
-using CatMessenger.Telegram.Connector.Packet.C2S;
+﻿using CatMessenger.Telegram.Connector.Packet.C2S;
 using Websocket.Client;
 
 namespace CatMessenger.Telegram.Connector;
