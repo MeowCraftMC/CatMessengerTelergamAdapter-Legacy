@@ -1,0 +1,16 @@
+{
+    "Debug": false,
+    "ClientName": "TelegramAdapter",
+    "Telegram": {
+        "Token": "",
+        "Proxy": {
+            "Enabled": false,
+            "Url": "socks5://localhost:10808"
+        },
+        "ChatId": ""
+    },
+    "Connector": {
+        "Url": "ws://localhost:33927",
+        "Key": "<Secret Key Here>"
+    }
+}
