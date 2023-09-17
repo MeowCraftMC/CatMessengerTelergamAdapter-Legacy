@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using CatMessenger.Telegram.Connector;
 using CatMessenger.Telegram.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
@@ -14,18 +15,21 @@ public class UpdateHandler : IUpdateHandler
     private ConfigAccessor Config { get; }
     
     private ITelegramBotClient BotClient { get; }
+    private IConnectorClientService ConnectorClient { get; }
 
-    public UpdateHandler(ILogger<UpdateHandler> logger, ConfigAccessor config, ITelegramBotClient bot)
+    public UpdateHandler(ILogger<UpdateHandler> logger, ConfigAccessor config, ITelegramBotClient bot, 
+        IConnectorClientService connectorClient)
     {
         Logger = logger;
         Config = config;
         
         BotClient = bot;
+        ConnectorClient = connectorClient;
     }
 
     public Task HandleUpdateAsync(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
     {
-        Logger.LogInformation(MessageParser.FromUpdate(update).ToString());
+        ConnectorClient.SendChatMessage(MessageParser.FromUpdate(update).ToString());
         return Task.CompletedTask;
     }
 

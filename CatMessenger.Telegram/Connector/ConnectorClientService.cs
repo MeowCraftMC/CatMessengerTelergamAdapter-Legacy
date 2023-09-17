@@ -1,5 +1,6 @@
 ﻿using System.Net.WebSockets;
 using System.Reactive.Linq;
+using System.Text;
 using CatMessenger.Telegram.Connector.Packet.C2S;
 using CatMessenger.Telegram.Connector.Packet.S2C;
 using Microsoft.Extensions.Hosting;
@@ -8,7 +9,7 @@ using Websocket.Client;
 
 namespace CatMessenger.Telegram.Connector;
 
-public class ConnectorClientService : IHostedService
+public class ConnectorClientService : IConnectorClientService
 {
     private ILogger<ConnectorClientService> Logger { get; }
     private ConfigAccessor Config { get; }
@@ -24,7 +25,7 @@ public class ConnectorClientService : IHostedService
 
         WebsocketClient = new WebsocketClient(new Uri(Config.GetConnectorUrl()));
 
-        WebsocketClient.ReconnectTimeout = TimeSpan.FromSeconds(15);
+        WebsocketClient.ReconnectTimeout = null;
         WebsocketClient.ReconnectionHappened.Subscribe(info =>
         {
             Logger.LogInformation("Connected! Type: {Type}", info.Type);
@@ -39,24 +40,20 @@ public class ConnectorClientService : IHostedService
             });
     }
     
-    public Task StartAsync(CancellationToken cancellationToken)
+    public void Start()
     {
         WebsocketClient.Start();
-        Logger.LogInformation("Connector connected!");
-        return Task.CompletedTask;
+        Logger.LogInformation("Connector connecting...");
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public void Stop()
     {
         WebsocketClient.Stop(WebSocketCloseStatus.NormalClosure, "");
-        Logger.LogInformation("Connector disconnected!");
-        return Task.CompletedTask;
+        Logger.LogInformation("Connector disconnecting...");
     }
 
-    public void SendMessage()
+    public void SendChatMessage(string message)
     {
-        // WebsocketClient.Send();
-        
-        // Todo: qyl27: Payload format.
+        WebsocketClient.Send(new C2SPublishPacket(Encoding.UTF8.GetBytes(message)));
     }
 }

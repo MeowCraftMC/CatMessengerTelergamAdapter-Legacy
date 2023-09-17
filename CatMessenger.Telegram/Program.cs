@@ -54,7 +54,7 @@ builder.Services.AddHttpClient("TelegramBotClient")
     });
 
 builder.Services.AddSingleton<ServerPacketHandler>();
-builder.Services.AddHostedService<ConnectorClientService>();
+builder.Services.AddSingleton<IConnectorClientService, ConnectorClientService>();
 
 // Fixme: qyl27: Maybe we needn't multi bot in same host?
 builder.Services.AddScoped<UpdateHandler>();

@@ -1,5 +1,6 @@
 ﻿using System.Formats.Cbor;
 using Microsoft.Extensions.Logging;
+using Telegram.Bot;
 using Websocket.Client;
 
 namespace CatMessenger.Telegram.Connector.Packet.S2C;
@@ -8,17 +9,20 @@ public class ServerPacketHandler
 {
     public ILogger<ServerPacketHandler> Logger { get; }
     public ConfigAccessor Config { get; }
+    public ITelegramBotClient Bot { get; }
 
     private Dictionary<string, S2CPacket> Handlers { get; } = new();
     
-    public ServerPacketHandler(ILogger<ServerPacketHandler> logger, ConfigAccessor config)
+    public ServerPacketHandler(ILogger<ServerPacketHandler> logger, ConfigAccessor config, ITelegramBotClient bot)
     {
         Logger = logger;
         Config = config;
+        Bot = bot;
         
         Handlers.Add(ConnectorConstants.ResponseSuccessful, new S2CSuccessfulPacket());
         Handlers.Add(ConnectorConstants.ResponseUnauthenticated, new S2CUnauthenticatedPacket());
         Handlers.Add(ConnectorConstants.ResponseNameAuthenticated, new S2CUnauthenticatedPacket());
+        Handlers.Add(ConnectorConstants.ResponseForward, new S2CForwardPacket());
     }
     
     public void ReadPacket(WebsocketClient client, byte[] data)

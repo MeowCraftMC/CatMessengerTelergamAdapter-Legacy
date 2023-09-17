@@ -12,4 +12,6 @@ public class ConnectorConstants
     public static readonly string ResponseSuccessful = "Successful";
     public static readonly string ResponseUnauthenticated = "Unauthenticated";
     public static readonly string ResponseNameAuthenticated = "ResponseNameAuthenticated";
+    
+    public static readonly string ResponseForward = "Forward";
 }
