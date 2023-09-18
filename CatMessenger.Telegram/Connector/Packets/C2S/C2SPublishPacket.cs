@@ -1,12 +1,13 @@
 ﻿using System.Formats.Cbor;
+using CatMessenger.Telegram.Connector.Payloads;
 
-namespace CatMessenger.Telegram.Connector.Packet.C2S;
+namespace CatMessenger.Telegram.Connector.Packets.C2S;
 
 public class C2SPublishPacket : C2SPacket
 {
-    private byte[] Payload { get; }
+    private MessengerPayloadBase Payload { get; }
     
-    public C2SPublishPacket(byte[] payload)
+    public C2SPublishPacket(MessengerPayloadBase payload)
     {
         Payload = payload;
     }
@@ -15,6 +16,6 @@ public class C2SPublishPacket : C2SPacket
     {
         writer.WriteTextString(ConnectorConstants.RequestPublish);
         writer.WriteTextString(ConnectorConstants.ChannelId);
-        writer.WriteByteString(Payload);
+        writer.WriteByteString(Payload.ToBytes());
     }
 }

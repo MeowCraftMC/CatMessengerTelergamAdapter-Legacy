@@ -1,4 +1,4 @@
-﻿using CatMessenger.Telegram.MessageComponent;
+﻿using CatMessenger.Telegram.Utilities.MessageComponent;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 

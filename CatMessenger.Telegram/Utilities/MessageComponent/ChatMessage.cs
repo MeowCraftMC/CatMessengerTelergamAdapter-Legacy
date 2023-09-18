@@ -1,8 +1,9 @@
 ﻿using System.Runtime.Serialization;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace CatMessenger.Telegram.MessageComponent;
+namespace CatMessenger.Telegram.Utilities.MessageComponent;
 
 public class ChatMessage
 {
@@ -230,5 +231,19 @@ public class ChatMessage
         {
             NullValueHandling = NullValueHandling.Ignore
         });
+    }
+
+    public string AsPlainText()
+    {
+        var builder = new StringBuilder(Text);
+
+        if (Extra != null) {
+            foreach (var extra in Extra)
+            {
+                builder.Append(extra.AsPlainText());
+            }
+        }
+
+        return builder.ToString();
     }
 }

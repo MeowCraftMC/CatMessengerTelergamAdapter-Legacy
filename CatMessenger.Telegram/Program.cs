@@ -3,7 +3,7 @@ using CatMessenger.Telegram;
 using CatMessenger.Telegram.Bot;
 using CatMessenger.Telegram.Bot.Bases;
 using CatMessenger.Telegram.Connector;
-using CatMessenger.Telegram.Connector.Packet.S2C;
+using CatMessenger.Telegram.Connector.Packets.S2C;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

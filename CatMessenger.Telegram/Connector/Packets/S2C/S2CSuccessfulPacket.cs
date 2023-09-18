@@ -1,7 +1,7 @@
 ﻿using System.Formats.Cbor;
 using Websocket.Client;
 
-namespace CatMessenger.Telegram.Connector.Packet.S2C;
+namespace CatMessenger.Telegram.Connector.Packets.S2C;
 
 public class S2CSuccessfulPacket : S2CPacket
 {

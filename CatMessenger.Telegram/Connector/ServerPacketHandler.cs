@@ -1,9 +1,10 @@
 ﻿using System.Formats.Cbor;
+using CatMessenger.Telegram.Connector.Packets.S2C;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Websocket.Client;
 
-namespace CatMessenger.Telegram.Connector.Packet.S2C;
+namespace CatMessenger.Telegram.Connector;
 
 public class ServerPacketHandler
 {

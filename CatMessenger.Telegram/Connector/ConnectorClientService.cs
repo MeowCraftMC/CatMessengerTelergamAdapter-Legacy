@@ -1,9 +1,8 @@
-﻿using System.Net.WebSockets;
+﻿using System.Formats.Cbor;
+using System.Net.WebSockets;
 using System.Reactive.Linq;
-using System.Text;
-using CatMessenger.Telegram.Connector.Packet.C2S;
-using CatMessenger.Telegram.Connector.Packet.S2C;
-using Microsoft.Extensions.Hosting;
+using CatMessenger.Telegram.Connector.Packets.C2S;
+using CatMessenger.Telegram.Connector.Payloads;
 using Microsoft.Extensions.Logging;
 using Websocket.Client;
 
@@ -36,7 +35,22 @@ public class ConnectorClientService : IConnectorClientService
         WebsocketClient.MessageReceived.Where(msg => msg.MessageType == WebSocketMessageType.Binary)
             .Subscribe(message =>
             {
-                PacketHandler.ReadPacket(WebsocketClient, message.Binary!);
+                try
+                {
+                    PacketHandler.ReadPacket(WebsocketClient, message.Binary!);
+                }
+                catch (CborContentException ex)
+                {
+                    Logger.LogWarning(ex, "Bad packet!");
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Logger.LogWarning(ex, "Malformed packet!");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Logger.LogWarning(ex, "Argument out of range!");
+                }
             });
     }
     
@@ -54,6 +68,6 @@ public class ConnectorClientService : IConnectorClientService
 
     public void SendChatMessage(string message)
     {
-        WebsocketClient.Send(new C2SPublishPacket(Encoding.UTF8.GetBytes(message)));
+        WebsocketClient.Send(new C2SPublishPacket(new RawMessagePayload(Config.GetName(), message)));
     }
 }

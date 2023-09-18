@@ -1,6 +1,6 @@
 ﻿using System.Formats.Cbor;
 
-namespace CatMessenger.Telegram.Connector.Packet.C2S;
+namespace CatMessenger.Telegram.Connector.Packets.C2S;
 
 public class C2SRegisterChannelPacket : C2SPacket
 {

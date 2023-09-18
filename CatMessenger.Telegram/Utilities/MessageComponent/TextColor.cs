@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CatMessenger.Telegram.MessageComponent;
+namespace CatMessenger.Telegram.Utilities.MessageComponent;
 
 public enum TextColor
 {
