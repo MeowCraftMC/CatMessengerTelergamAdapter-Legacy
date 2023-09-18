@@ -1,9 +1,20 @@
 ﻿using System.Formats.Cbor;
+using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
+using Websocket.Client;
 
 namespace CatMessenger.Telegram.Connector.Payloads;
 
 public abstract class MessengerPayloadBase
 {
+    protected MessengerPayloadBase()
+    {
+    }
+    
+    protected MessengerPayloadBase(CborReader reader)
+    {
+    }
+    
     public abstract MessengerPayloadType GetPayloadType();
 
     public byte[] ToBytes()
@@ -11,7 +22,6 @@ public abstract class MessengerPayloadBase
         var writer = new CborWriter();
         writer.WriteStartArray(null);
         writer.WriteInt32((int)GetPayloadType());
-        writer.WriteTextString(RemoteName);
         Write(writer);
         writer.WriteEndArray();
         return writer.Encode();
@@ -20,17 +30,12 @@ public abstract class MessengerPayloadBase
     protected abstract void Write(CborWriter writer);
     
     public abstract string AsString();
-    
-    public string RemoteName { get; }
 
-    protected MessengerPayloadBase(string remoteName)
+    public virtual async Task Handle(string publisher, WebsocketClient client, ServerPacketHandler packetHandler)
     {
-        RemoteName = remoteName;
-    }
-    
-    protected MessengerPayloadBase(CborReader reader)
-    {
-        RemoteName = reader.ReadTextString();
+        var config = packetHandler.Config;
+        await packetHandler.Bot.SendTextMessageAsync(config.GetTelegramChatId(), 
+            $"【{publisher}】{AsString()}", parseMode: ParseMode.Html);
     }
 
     public static MessengerPayloadBase FromBytes(byte[] bytes)
@@ -41,12 +46,20 @@ public abstract class MessengerPayloadBase
 
         MessengerPayloadBase payload = type switch
         {
-            MessengerPayloadType.Raw => new RawMessagePayload(reader),
-            MessengerPayloadType.System => new SystemMessagePayload(reader),
-            MessengerPayloadType.PlayerOnline => new PlayerOnlineMessagePayload(reader),
-            MessengerPayloadType.ServerLifecycle => new ServerLifecycleMessagePayload(reader),
-            MessengerPayloadType.PlayerDeath => new PlayerDeathMessagePayload(reader),
-            MessengerPayloadType.PlayerAchievement => new PlayerAdvancementMessagePayload(reader),
+            MessengerPayloadType.Raw => new RawPayload(reader),
+            MessengerPayloadType.ChatComponent => new ChatComponentPayload(reader),
+            MessengerPayloadType.ChatText => new ChatTextPayload(reader),
+            MessengerPayloadType.System => new SystemPayload(reader),
+            MessengerPayloadType.PlayerOnline => new PlayerOnlinePayload(reader),
+            MessengerPayloadType.ServerLifecycle => new ServerLifecyclePayload(reader),
+            MessengerPayloadType.PlayerDeath => new PlayerDeathPayload(reader),
+            MessengerPayloadType.PlayerAdvancement => new PlayerAdvancementPayload(reader),
+            MessengerPayloadType.QueryOnline or
+            MessengerPayloadType.QueryTime or
+            MessengerPayloadType.QueryResultOnline or
+            MessengerPayloadType.QueryResultTime or
+            MessengerPayloadType.CommandResult or
+            MessengerPayloadType.RunCommand or
             _ => throw new ArgumentOutOfRangeException()
         };
 

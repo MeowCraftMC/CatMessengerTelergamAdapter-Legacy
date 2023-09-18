@@ -66,8 +66,8 @@ public class ConnectorClientService : IConnectorClientService
         Logger.LogInformation("Connector disconnecting...");
     }
 
-    public void SendChatMessage(string message)
+    public void SendChatMessage(MessengerPayloadBase payload)
     {
-        WebsocketClient.Send(new C2SPublishPacket(new RawMessagePayload(Config.GetName(), message)));
+        WebsocketClient.Send(new C2SPublishPacket(payload));
     }
 }

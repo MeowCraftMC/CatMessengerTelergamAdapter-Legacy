@@ -1,4 +1,6 @@
-﻿namespace CatMessenger.Telegram.Connector;
+﻿using CatMessenger.Telegram.Connector.Payloads;
+
+namespace CatMessenger.Telegram.Connector;
 
 public interface IConnectorClientService
 {
@@ -6,5 +8,5 @@ public interface IConnectorClientService
     
     void Stop();
     
-    void SendChatMessage(string message);
+    void SendChatMessage(MessengerPayloadBase payload);
 }
