@@ -23,14 +23,14 @@ public class PollingService : PollingServiceBase<ReceiverService>
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         ConnectorClient.Start();
-        await Bot.SendTextMessageAsync(Config.GetTelegramChatId(), "【系统】CatMessenger Telegram 适配器启动了！", cancellationToken: cancellationToken);
+        await Bot.SendTextMessageAsync(Config.GetTelegramChatId(), $"【系统】{Config.GetName()} 适配器启动了！", cancellationToken: cancellationToken);
         await base.StartAsync(cancellationToken);
     }
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
         ConnectorClient.Stop();
-        await Bot.SendTextMessageAsync(Config.GetTelegramChatId(), "【系统】CatMessenger Telegram 适配器关闭了！", cancellationToken: cancellationToken);
+        await Bot.SendTextMessageAsync(Config.GetTelegramChatId(), $"【系统】{Config.GetName()} 适配器关闭了！", cancellationToken: cancellationToken);
         await base.StopAsync(cancellationToken);
     }
 }
