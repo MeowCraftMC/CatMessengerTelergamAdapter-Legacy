@@ -33,6 +33,14 @@ public class MessageParser
     {
         var chatMsg = new ChatMessage();
 
+        if (message.From != null)
+        {
+            chatMsg.Append(new ChatMessage("[")
+                .WithColor(TextColor.Aqua)
+                .Append(FromUser(message.From))
+                .Append(new ChatMessage("] ")));
+        }
+
         if (edited)
         {
             chatMsg.Append(new ChatMessage("[已编辑] ").WithColor(TextColor.Green));
@@ -108,14 +116,6 @@ public class MessageParser
             chatMsg.Append(new ChatMessage($"[视频 {message.Video.Duration}秒] ").WithColor(TextColor.Blue));
         }
 
-        if (message.From != null)
-        {
-            chatMsg.Append(new ChatMessage("[")
-                .WithColor(TextColor.Aqua)
-                .Append(FromUser(message.From))
-                .Append(new ChatMessage("] ")));
-        }
-
         if (message.Text != null)
         {
             chatMsg.Append(FromText(message.Text, 30));
@@ -160,7 +160,7 @@ public class MessageParser
         
         var text = originText.Replace('\n', ' ');
 
-        if (trim <= 0 && text.Length > trim)
+        if (trim > 0 && text.Length > trim)
         {
             message.Append(new ChatMessage(text[..trim] + "……"));
 

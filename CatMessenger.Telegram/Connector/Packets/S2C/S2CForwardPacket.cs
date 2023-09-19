@@ -8,9 +8,9 @@ public class S2CForwardPacket : S2CPacket
 {
     public override async Task Handle(WebsocketClient client, ServerPacketHandler packetHandler, CborReader reader)
     {
-        var bytes = reader.ReadByteString();
         var publisher = reader.ReadTextString();
         var channel = reader.ReadTextString();
+        var bytes = reader.ReadByteString();
 
         if (channel != ConnectorConstants.ChannelId)
         {
