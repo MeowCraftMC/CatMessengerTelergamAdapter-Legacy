@@ -54,7 +54,7 @@ public class ConfigAccessor
 
     public string GetName()
     {
-        return Config.GetValue<string>("ClientName")!;
+        return Config.GetValue<string>("Connector:ClientName")!;
     }
 
     public string GetConnectorKey()

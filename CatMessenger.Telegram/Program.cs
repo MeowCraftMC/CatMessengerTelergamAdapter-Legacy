@@ -13,6 +13,7 @@ using Telegram.Bot;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("config.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"config.{ConfigAccessor.GetDevEnvironmentVariable()}.json", optional: true, reloadOnChange: true)
     .AddCommandLine(args)

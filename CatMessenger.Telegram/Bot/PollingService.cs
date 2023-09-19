@@ -12,7 +12,7 @@ public class PollingService : PollingServiceBase<ReceiverService>
     private IConnectorClientService ConnectorClient { get; }
     
     public PollingService(IServiceProvider serviceProvider, ILogger<PollingService> logger,
-        ITelegramBotClient bot,ConfigAccessor config, IConnectorClientService connectorClient) 
+        ITelegramBotClient bot, ConfigAccessor config, IConnectorClientService connectorClient) 
         : base(serviceProvider, logger)
     {
         Bot = bot;
