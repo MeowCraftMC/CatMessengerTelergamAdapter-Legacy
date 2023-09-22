@@ -157,6 +157,11 @@ public class MessageParser
     public static ChatMessage FromText(string originText, int trim = -1, bool hoverShowFull = true)
     {
         var message = new ChatMessage();
+
+        if (string.IsNullOrWhiteSpace(originText))
+        {
+            return message;
+        }
         
         var text = originText.Replace('\n', ' ');
 
