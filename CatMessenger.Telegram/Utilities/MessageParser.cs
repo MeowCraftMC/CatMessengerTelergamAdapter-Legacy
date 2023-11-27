@@ -1,4 +1,5 @@
-﻿using CatMessenger.Telegram.Utilities.MessageComponent;
+﻿using System.Globalization;
+using CatMessenger.Telegram.Utilities.MessageComponent;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -43,14 +44,14 @@ public class MessageParser
 
         if (edited)
         {
-            chatMsg.Append(new ChatMessage("[已编辑] ").WithColor(TextColor.Green));
+            chatMsg.Append(new ChatMessage("[已编辑] ").WithColor(TextColor.Blue));
         }
         
         if (message.ReplyToMessage != null)
         {
             var reply = message.ReplyToMessage;
             chatMsg.Append(new ChatMessage("[回复 ")
-                .WithColor(TextColor.Gold)
+                .WithColor(TextColor.Green)
                 .Append(FromUser(reply.From!))
                 .Append(new ChatMessage("："))
                 .Append(FromText(reply.Text!, 10))
@@ -61,7 +62,7 @@ public class MessageParser
         {
             var forwardFrom = message.ForwardFrom;
             chatMsg.Append(new ChatMessage("[转发自用户 ")
-                .WithColor(TextColor.Gold)
+                .WithColor(TextColor.Green)
                 .Append(FromUser(forwardFrom))
                 .Append(new ChatMessage("] ")));
         }
@@ -70,14 +71,14 @@ public class MessageParser
         {
             var forwardFrom = message.ForwardFromChat;
             chatMsg.Append(new ChatMessage("[转发")
-                .WithColor(TextColor.Gold)
+                .WithColor(TextColor.Green)
                 .WithHoverMessage(FromChat(forwardFrom))
                 .Append(new ChatMessage("] ")));
         }
 
         if (message.Photo is { Length: > 0 })
         {
-            chatMsg.Append(new ChatMessage("[图片] ").WithColor(TextColor.Green));
+            chatMsg.Append(new ChatMessage("[图片] ").WithColor(TextColor.Blue));
             
             // Fixme: qyl27: Show pictures count?
             // var count = message.Photo.DistinctBy(photo => photo.FileUniqueId).Count();
@@ -167,7 +168,7 @@ public class MessageParser
 
         if (trim > 0 && text.Length > trim)
         {
-            message.Append(new ChatMessage(text[..trim] + "……"));
+            message.Append(new ChatMessage(new StringInfo(text).SubstringByTextElements(0, trim) + "……"));
 
             if (hoverShowFull)
             {
