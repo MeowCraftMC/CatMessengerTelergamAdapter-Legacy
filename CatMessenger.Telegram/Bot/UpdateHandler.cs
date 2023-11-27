@@ -34,11 +34,14 @@ public class UpdateHandler : IUpdateHandler
             && update.Message.Text!.StartsWith("/"))
         {
             var command = update.Message.Text.Substring(0, 1).Split(" ");
+            Logger.LogInformation("Telegram command: {Command}", update.Message.Text);
             await OnCommand(update.Message, command[0].Split('@')[0], command[1..]);
         }
         else
         {
-            ConnectorClient.SendChatMessage(new ChatComponentPayload(MessageParser.FromUpdate(update).ToString()));
+            var message = MessageParser.FromUpdate(update);
+            Logger.LogInformation("Telegram message: {Message}", message.ToString());
+            ConnectorClient.SendChatMessage(new ChatComponentPayload(message.ToString()));
         }
     }
 
