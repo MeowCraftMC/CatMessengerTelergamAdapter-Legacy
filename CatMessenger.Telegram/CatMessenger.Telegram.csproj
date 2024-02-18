@@ -9,11 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CrystalConnector.Client" Version="1.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-      <PackageReference Include="NLog.Extensions.Hosting" Version="5.3.5" />
+      <PackageReference Include="NLog.Extensions.Hosting" Version="5.3.8" />
       <PackageReference Include="System.Formats.Cbor" Version="8.0.0" />
-      <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+      <PackageReference Include="Telegram.Bot" Version="20.0.0-alpha.1" />
       <PackageReference Include="Websocket.Client" Version="5.0.0" />
     </ItemGroup>
 
